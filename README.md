@@ -23,13 +23,13 @@ Easily connect as any user, send custom messages to other users, and monitor inc
 ```bash
 git clone https://github.com/orchid0610/socket-client.git
 cd socket-client
-
+```
 2. Install dependencies (Node.js required):
-
+```bash
 npm install
-
+```
 3. Start the server:
-
+```bash
 node server.js
-
+```
 4. Open the tester page in your browser
