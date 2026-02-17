@@ -211,7 +211,7 @@
                 log(`✅ Connected to ${socketBaseUrl} as user ${userId}`);
             });
 
-            socket.on('test_message', (data) => {
+            socket.on('test_payload', (data) => {
                 log(`📩 Received test_message:\n${JSON.stringify(data, null, 2)}`);
             });
 
@@ -238,10 +238,10 @@
         }
 
         const payload = {
-            event: 'test_message',
+            event: 'test_payload',
             data: {
                 user_id: Number(targetUserId),
-                message: {
+                payload: {
                     text: message,
                     sent_at: new Date().toISOString()
                 }
@@ -256,7 +256,7 @@
             });
 
             await res.json();
-            log(`🚀 Emitted test_message → user:${targetUserId}`);
+            log(`🚀 Emitted test_payload → user:${targetUserId}`);
         } catch (e) {
             log(`❌ Emit failed: ${e.message}`);
         }
