@@ -151,6 +151,12 @@
     </div>
 
     <div class="field">
+        <label>Event Name</label>
+        <input id="eventName" placeholder="e.g. available_riders" />
+    </div>
+
+
+    <div class="field">
         <label>Send message to User ID</label>
         <input id="targetUserId" placeholder="e.g. 45" />
     </div>
@@ -171,6 +177,7 @@
 <script>
     let socket;
     let socketBaseUrl;
+    let currentEvent = 'test_payload'; 
     const logEl = document.getElementById('log');
 
     function log(text) {
@@ -192,7 +199,8 @@
 
     async function connectSocket() {
         socketBaseUrl = document.getElementById('socketUrl').value.trim();
-        const userId = document.getElementById('connectUserId').value;
+        const userId = document.getElementById('connectUserId').value.trim();
+        currentEvent = document.getElementById('eventName').value.trim() || 'test_payload';
 
         if (!socketBaseUrl || !userId) {
             alert('Socket URL and User ID are required');
@@ -211,7 +219,7 @@
                 log(`✅ Connected to ${socketBaseUrl} as user ${userId}`);
             });
 
-            socket.on('test_payload', (data) => {
+            socket.on(currentEvent, (data) => {
                 log(`📩 Received test_message:\n${JSON.stringify(data, null, 2)}`);
             });
 
@@ -229,8 +237,9 @@
     }
 
     async function sendMessage() {
-        const targetUserId = document.getElementById('targetUserId').value;
+        const targetUserId = document.getElementById('targetUserId').value.trim();
         const message = document.getElementById('message').value;
+        const eventToEmit = document.getElementById('eventName').value.trim() || 'test_payload';
 
         if (!socketBaseUrl || !targetUserId) {
             alert('Socket URL and target user ID required');
@@ -238,9 +247,9 @@
         }
 
         const payload = {
-            event: 'test_payload',
+            event: eventToEmit,
             data: {
-                user_id: Number(targetUserId),
+                user_id: String(targetUserId),
                 payload: {
                     text: message,
                     sent_at: new Date().toISOString()
